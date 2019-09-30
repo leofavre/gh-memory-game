@@ -26,16 +26,18 @@ const getAuthHeaders = token => ({
   window
     .fetch('https://api.github.com/user', getAuthHeaders(token))
     .then(res => {
-      console.log(res);
       if (res.status >= 400) {
         window.localStorage.removeItem(STORE_INDEX);
         window.location.href = '/';
+        return undefined;
       }
       return res.json();
     })
     .then(res => {
-      document.body.innerHTML = `<pre>${
-        JSON.stringify(res, null, 2)
-      }</pre>`;
+      if (res != null) {
+        document.body.innerHTML = `<pre>${
+          JSON.stringify(res, null, 2)
+        }</pre>`;
+      }
     });
 })();
