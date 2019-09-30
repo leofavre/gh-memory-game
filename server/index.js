@@ -39,7 +39,7 @@ app.get('/authenticate/:code', (req, res, next) => {
 });
 
 app.get('/login', (req, res) => {
-  res.redirect(`https://github.com/login/oauth/authorize?${
+  res.redirect(`https://${OAUTH_HOST}:${OAUTH_PORT}/login/oauth/authorize?${
     qs.stringify({
       client_id: OAUTH_CLIENT_ID,
       scope: 'user:email'
