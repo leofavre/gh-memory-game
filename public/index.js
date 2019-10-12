@@ -1,3 +1,6 @@
+import { GitHubCard } from './components/GitHubCard/index.js';
+import { MemoryGame } from './components/MemoryGame/index.js';
+
 const STORE_INDEX = 'MemoGameGitHubToken';
 
 const getAuthHeaders = token => ({
@@ -32,12 +35,8 @@ const getAuthHeaders = token => ({
         return undefined;
       }
       return res.json();
-    })
-    .then(res => {
-      if (res != null) {
-        document.body.innerHTML = `<pre>${
-          JSON.stringify(res, null, 2)
-        }</pre>`;
-      }
     });
+
+  window.customElements.define('github-card', GitHubCard);
+  window.customElements.define('memory-game', MemoryGame);
 })();
