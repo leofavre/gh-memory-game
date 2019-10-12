@@ -1,11 +1,11 @@
+import { STORE_INDEX } from './constants/index.js';
+import { sdk } from './sdk/index.js';
 import { GitHubCard } from './components/GitHubCard/index.js';
 import { MemoryGame } from './components/MemoryGame/index.js';
 
-const STORE_INDEX = 'MemoGameGitHubToken';
-
-const getAuthHeaders = token => ({
-  headers: { Authorization: `token ${token}` }
-});
+const showOnScreen = str => {
+  document.body.innerHTML += `<pre>${JSON.stringify(str, null, 2)}</pre>`;
+};
 
 (async () => {
   let token = window.localStorage.getItem(STORE_INDEX);
@@ -26,15 +26,18 @@ const getAuthHeaders = token => ({
     return undefined;
   }
 
-  window
-    .fetch('https://api.github.com/user', getAuthHeaders(token))
-    .then(res => {
-      if (res.status >= 400) {
-        window.localStorage.removeItem(STORE_INDEX);
-        window.location.href = '/';
-        return undefined;
-      }
-      return res.json();
+  Promise
+    .all([
+      sdk.github.self.get(),
+      sdk.github.followers.get(),
+      sdk.github.following.get()
+    ])
+    .then(responses => {
+      responses.forEach(showOnScreen);
+    })
+    .catch(() => {
+      window.localStorage.removeItem(STORE_INDEX);
+      window.location.href = '/';
     });
 
   window.customElements.define('github-card', GitHubCard);
