@@ -1,6 +1,7 @@
 import { gitHubSdk } from './gitHubSdk.js';
 
 export const getSelfInformation = gitHubSdk.self.get;
+export const getUserInformation = gitHubSdk.user.get;
 
 export const getRelatedUsersInPullRequests = login => {
   return gitHubSdk.userEvents
