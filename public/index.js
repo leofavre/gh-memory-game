@@ -1,11 +1,12 @@
 import { STORE_INDEX } from './constants/index.js';
-import { sdk } from './sdk/index.js';
 import { GitHubCard } from './components/GitHubCard/index.js';
 import { MemoryGame } from './components/MemoryGame/index.js';
 
-const showOnScreen = str => {
-  document.body.innerHTML += `<pre>${JSON.stringify(str, null, 2)}</pre>`;
-};
+import {
+  getSelfInformation,
+  getRelatedUsersInPullRequests,
+  rankUsersByCount
+} from './service/gitHubService.js';
 
 (async () => {
   let token = window.localStorage.getItem(STORE_INDEX);
@@ -26,19 +27,18 @@ const showOnScreen = str => {
     return undefined;
   }
 
-  Promise
-    .all([
-      sdk.github.self.get(),
-      sdk.github.followers.get(),
-      sdk.github.following.get()
-    ])
-    .then(responses => {
-      responses.forEach(showOnScreen);
-    })
-    .catch(() => {
-      window.localStorage.removeItem(STORE_INDEX);
-      window.location.href = '/';
-    });
+  const self = await getSelfInformation();
+  console.log(self);
+
+  const relatedUsers = await getRelatedUsersInPullRequests(self.login);
+  const rankedUsers = rankUsersByCount(relatedUsers);
+  console.log(rankedUsers);
+
+  rankedUsers.forEach(async user => {
+    const relatedUsers = await getRelatedUsersInPullRequests(user.login);
+    const rankedUsers = rankUsersByCount(relatedUsers);
+    console.log(rankedUsers);
+  });
 
   window.customElements.define('github-card', GitHubCard);
   window.customElements.define('memory-game', MemoryGame);
