@@ -42,5 +42,10 @@ export const gitHubSdk = {
     get (login) {
       return makeRequest(`${baseUrl}users/${login}/events`, getAuth());
     }
+  },
+  userReceivedEvents: {
+    get (login) {
+      return makeRequest(`${baseUrl}users/${login}/received_events`, getAuth());
+    }
   }
 };
