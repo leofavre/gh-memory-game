@@ -1,5 +1,8 @@
 import { gitHubSdk } from './gitHubSdk.js';
 
+const removeInvalidOrBot = user =>
+  user != null && !user.login.includes('[bot]');
+
 const loginAndAvatar = ({ login, avatar_url: avatar }) => ({ login, avatar });
 
 export const getSelfInformation = () =>
@@ -9,10 +12,12 @@ export const getUserInformation = login =>
   gitHubSdk.user.get(login).then(loginAndAvatar);
 
 export const getUserFollowers = login =>
-  gitHubSdk.userFollowers.get(login).then(users => users.map(loginAndAvatar));
+  gitHubSdk.userFollowers.get(login).then(users => users
+    .filter(removeInvalidOrBot).map(loginAndAvatar));
 
 export const getUserFollowing = login =>
-  gitHubSdk.userFollowing.get(login).then(users => users.map(loginAndAvatar));
+  gitHubSdk.userFollowing.get(login).then(users => users
+    .filter(removeInvalidOrBot).map(loginAndAvatar));
 
 export const getRelatedUsersInNotifications = login => {
   return gitHubSdk.userReceivedEvents.get(login)
@@ -26,7 +31,7 @@ export const getRelatedUsersInNotifications = login => {
           ? [...result, event.actor]
           : result;
       }, [])
-      .filter(item => item != null && !item.login.includes('[bot]'))
+      .filter(removeInvalidOrBot)
       .map(loginAndAvatar)
     );
 };
@@ -52,7 +57,7 @@ export const getRelatedUsersInPullRequests = login => {
           ...requestedReviewers
         ];
       }, [])
-      .filter(item => item != null && !item.login.includes('[bot]'))
+      .filter(removeInvalidOrBot)
       .map(loginAndAvatar)
     );
 };
