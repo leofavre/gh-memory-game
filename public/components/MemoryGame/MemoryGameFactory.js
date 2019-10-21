@@ -64,17 +64,17 @@ export const MemoryGameFactory = (Base = class {}) =>
       this.renderRoot.removeEventListener('click', this._handleClick);
     }
 
-    _handleRowsChanged (rows) {
-      this.board.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    _handleRowsChanged () {
+      this.board.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`;
     }
 
-    _handleColumnsChanged (columns) {
-      this.board.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+    _handleColumnsChanged () {
+      this.board.style.gridTemplateColumns = `repeat(${this.columns}, 1fr)`;
     }
 
-    _handleRevealedChanged (revealed) {
+    _handleRevealedChanged () {
       this.cards.forEach((card, index) => {
-        setAttr(card, 'revealed', revealed.includes(index));
+        setAttr(card, 'revealed', this.revealed.includes(index));
       });
     }
 
@@ -82,7 +82,7 @@ export const MemoryGameFactory = (Base = class {}) =>
       const index = this.cards.indexOf(card);
 
       if (index >= 0) {
-        this._dispatchEventAndCallMethod('try', { index, card });
+        this._dispatchEventAndCallMethod('try', { card, index });
       }
     }
   };

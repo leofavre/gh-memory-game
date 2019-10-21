@@ -1,7 +1,9 @@
 import { STORE_INDEX } from './constants/index.js';
-import { GitHubCard } from './components/GitHubCard/index.js';
+import { GithubCard } from './components/GithubCard/index.js';
 import { MemoryGame } from './components/MemoryGame/index.js';
 import { fetchCards } from './game/fetchCards.js';
+import { applyGameRules } from './game/applyGameRules.js';
+import { shuffle } from './helpers/shuffle.js';
 
 (async () => {
   let token = window.localStorage.getItem(STORE_INDEX);
@@ -17,13 +19,30 @@ import { fetchCards } from './game/fetchCards.js';
         window.location.href = '/';
       }
     } else {
-      document.body.innerHTML = '<a href="/login">Login with GitHub</a>';
+      document.body.innerHTML = '<a href="/login">Login with Github</a>';
     }
     return undefined;
   }
 
-  fetchCards().then(console.log);
-
-  window.customElements.define('github-card', GitHubCard);
+  window.customElements.define('github-card', GithubCard);
   window.customElements.define('memory-game', MemoryGame);
+
+  const boardEl = document.createElement('memory-game');
+  boardEl.rows = 4;
+  boardEl.columns = 8;
+
+  document.body.appendChild(boardEl);
+  applyGameRules(boardEl);
+
+  const cards = await fetchCards(16);
+
+  shuffle([...cards, ...cards])
+    .forEach(({ login, avatar }) => {
+      const cardEl = document.createElement('github-card');
+      cardEl.login = login;
+      cardEl.innerHTML = `
+        <img src="${avatar}" width="100%" height="100%"></img>
+      `;
+      boardEl.appendChild(cardEl);
+    });
 })();

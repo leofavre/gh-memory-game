@@ -17,7 +17,7 @@ const makeRequest = (...args) => window
     return res.json();
   });
 
-export const gitHubSdk = {
+export const githubSdk = {
   self: {
     get () {
       return makeRequest(`${baseUrl}user`, getAuth());

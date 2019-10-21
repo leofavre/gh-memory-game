@@ -1,7 +1,7 @@
 {
   "name": "gh-memory-game",
   "version": "0.1.0",
-  "description": "GitHub Memory Game",
+  "description": "Github Memory Game",
   "main": "server/index.js",
   "dependencies": {
     "dotenv": "^8.1.0",

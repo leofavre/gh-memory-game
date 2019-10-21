@@ -1,8 +1,8 @@
-import { GitHubCardFactory } from './GitHubCardFactory.js';
-import { GitHubCardView } from './GitHubCardView.js';
+import { GithubCardFactory } from './GithubCardFactory.js';
+import { GithubCardView } from './GithubCardView.js';
 import { WithComponent } from '../common/WithComponent.js';
 
-const GitHubCard = GitHubCardFactory(WithComponent(HTMLElement));
-GitHubCard.view = GitHubCardView;
+const GithubCard = GithubCardFactory(WithComponent(HTMLElement));
+GithubCard.view = GithubCardView;
 
-export { GitHubCard };
+export { GithubCard };

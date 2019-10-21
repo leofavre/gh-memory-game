@@ -1,4 +1,4 @@
-import { gitHubSdk } from './gitHubSdk.js';
+import { githubSdk } from './githubSdk.js';
 
 const removeInvalidOrBot = user =>
   user != null && !user.login.includes('[bot]');
@@ -6,21 +6,21 @@ const removeInvalidOrBot = user =>
 const loginAndAvatar = ({ login, avatar_url: avatar }) => ({ login, avatar });
 
 export const getSelfInformation = () =>
-  gitHubSdk.self.get().then(loginAndAvatar);
+  githubSdk.self.get().then(loginAndAvatar);
 
 export const getUserInformation = login =>
-  gitHubSdk.user.get(login).then(loginAndAvatar);
+  githubSdk.user.get(login).then(loginAndAvatar);
 
 export const getUserFollowers = login =>
-  gitHubSdk.userFollowers.get(login).then(users => users
+  githubSdk.userFollowers.get(login).then(users => users
     .filter(removeInvalidOrBot).map(loginAndAvatar));
 
 export const getUserFollowing = login =>
-  gitHubSdk.userFollowing.get(login).then(users => users
+  githubSdk.userFollowing.get(login).then(users => users
     .filter(removeInvalidOrBot).map(loginAndAvatar));
 
 export const getRelatedUsersInNotifications = login => {
-  return gitHubSdk.userReceivedEvents.get(login)
+  return githubSdk.userReceivedEvents.get(login)
     .then(events => events
       .reduce((result, event) => {
         return [
@@ -37,7 +37,7 @@ export const getRelatedUsersInNotifications = login => {
 };
 
 export const getRelatedUsersInPullRequests = login => {
-  return gitHubSdk.userEvents.get(login)
+  return githubSdk.userEvents.get(login)
     .then(events => events
       .reduce((result, event) => {
         const pullRequest = (event.payload && event.payload.pull_request) || {};

@@ -6,9 +6,9 @@ import {
   getUserFollowing,
   getUserFollowers,
   rankUsersByCount
-} from '../service/gitHubService.js';
+} from '../service/githubService.js';
 
-export const fetchCards = async (login) => {
+export const fetchCards = async (max = 12, login) => {
   const cards = [];
 
   const addUsersToCards = users => {
@@ -28,16 +28,16 @@ export const fetchCards = async (login) => {
   const rankedUsersInPRs = rankUsersByCount(relatedInPRs);
   addUsersToCards(rankedUsersInPRs);
 
-  if (cards.length >= 12) {
-    return cards.slice(0, 12);
+  if (cards.length >= max) {
+    return cards.slice(0, max);
   }
 
   const relatedInNotes = await getRelatedUsersInNotifications(subject.login);
   const rankedUsersInNotes = rankUsersByCount(relatedInNotes);
   addUsersToCards(rankedUsersInNotes);
 
-  if (cards.length >= 12) {
-    return cards.slice(0, 12);
+  if (cards.length >= max) {
+    return cards.slice(0, max);
   }
 
   for (const user of cards.slice(1)) {
@@ -45,8 +45,8 @@ export const fetchCards = async (login) => {
     const rankedUsers = rankUsersByCount(relatedUsers);
     addUsersToCards(rankedUsers);
 
-    if (cards.length >= 12) {
-      return cards.slice(0, 12);
+    if (cards.length >= max) {
+      return cards.slice(0, max);
     }
   }
 
@@ -54,13 +54,13 @@ export const fetchCards = async (login) => {
   const rankedFollowing = rankUsersByCount(following);
   addUsersToCards(rankedFollowing);
 
-  if (cards.length >= 12) {
-    return cards.slice(0, 12);
+  if (cards.length >= max) {
+    return cards.slice(0, max);
   }
 
   const followers = await getUserFollowers(subject.login);
   const rankedFollowers = rankUsersByCount(followers);
   addUsersToCards(rankedFollowers);
 
-  return cards.slice(0, 12);
+  return cards.slice(0, max);
 };
