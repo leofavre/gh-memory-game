@@ -1,6 +1,6 @@
 import { setAttr } from '../../helpers/setAttr.js';
 
-export const GithubCardFactory = (Base = class {}) =>
+export const GitHubCardFactory = (Base = class {}) =>
   class extends Base {
     static get observedAttributes () {
       return ['revealed'];

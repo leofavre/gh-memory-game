@@ -10,7 +10,7 @@ dotenv.config();
 const {
   SERVER_HOST = 'localhost',
   SERVER_PORT = 3123,
-  OAUTH_HOST = 'github.com',
+  OAUTH_HOST = 'gitHub.com',
   OAUTH_PORT = 443,
   OAUTH_CLIENT_ID,
   OAUTH_CLIENT_SECRET

@@ -1,7 +1,7 @@
 {
   "name": "gh-memory-game",
   "version": "0.1.0",
-  "description": "Github Memory Game",
+  "description": "GitHub Memory Game",
   "main": "server/index.js",
   "dependencies": {
     "dotenv": "^8.1.0",
@@ -30,12 +30,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leofavre/gh-memory-game.git"
+    "url": "git+https://gitHub.com/leofavre/gh-memory-game.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/leofavre/gh-memory-game/issues"
+    "url": "https://gitHub.com/leofavre/gh-memory-game/issues"
   },
-  "homepage": "https://github.com/leofavre/gh-memory-game#readme"
+  "homepage": "https://gitHub.com/leofavre/gh-memory-game#readme"
 }

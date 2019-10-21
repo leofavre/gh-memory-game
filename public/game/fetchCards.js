@@ -6,7 +6,7 @@ import {
   getUserFollowing,
   getUserFollowers,
   rankUsersByCount
-} from '../service/githubService.js';
+} from '../service/gitHubService.js';
 
 export const fetchCards = async (max = 12, login) => {
   const cards = [];

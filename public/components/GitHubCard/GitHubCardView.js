@@ -1,6 +1,6 @@
-const GithubCardView = document.createElement('template');
+const GitHubCardView = document.createElement('template');
 
-GithubCardView.innerHTML = `
+GitHubCardView.innerHTML = `
   <style>
     :host {
       height: auto;
@@ -61,4 +61,4 @@ GithubCardView.innerHTML = `
   </div>
 `;
 
-export { GithubCardView };
+export { GitHubCardView };

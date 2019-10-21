@@ -1,5 +1,5 @@
 import { STORE_INDEX } from './constants/index.js';
-import { GithubCard } from './components/GithubCard/index.js';
+import { GitHubCard } from './components/GitHubCard/index.js';
 import { MemoryGame } from './components/MemoryGame/index.js';
 import { fetchCards } from './game/fetchCards.js';
 import { applyGameRules } from './game/applyGameRules.js';
@@ -19,12 +19,12 @@ import { shuffle } from './helpers/shuffle.js';
         window.location.href = '/';
       }
     } else {
-      document.body.innerHTML = '<a href="/login">Login with Github</a>';
+      document.body.innerHTML = '<a href="/login">Login with GitHub</a>';
     }
     return undefined;
   }
 
-  window.customElements.define('github-card', GithubCard);
+  window.customElements.define('github-card', GitHubCard);
   window.customElements.define('memory-game', MemoryGame);
 
   const boardEl = document.createElement('memory-game');
@@ -41,7 +41,9 @@ import { shuffle } from './helpers/shuffle.js';
       const cardEl = document.createElement('github-card');
       cardEl.login = login;
       cardEl.innerHTML = `
-        <img src="${avatar}" width="100%" height="100%"></img>
+        <span>
+          <img src="${avatar}"></img>
+        </span>
       `;
       boardEl.appendChild(cardEl);
     });
