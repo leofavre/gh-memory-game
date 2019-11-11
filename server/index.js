@@ -38,7 +38,7 @@ app.get('/authenticate/:code', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/login', (req, res) => {
+app.get('/auth', (req, res) => {
   res.redirect(`https://${OAUTH_HOST}:${OAUTH_PORT}/login/oauth/authorize?${
     qs.stringify({
       client_id: OAUTH_CLIENT_ID,
@@ -47,11 +47,11 @@ app.get('/login', (req, res) => {
   }`);
 });
 
-app.get('/oauth', (req, res) => {
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
-
-app.use(express.static('public'));
 
 app.listen(SERVER_PORT, SERVER_HOST, () => {
   console.log(`Listening on ${SERVER_HOST}:${SERVER_PORT}`);

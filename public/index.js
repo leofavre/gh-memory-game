@@ -11,7 +11,7 @@ import { shuffle } from './helpers/shuffle.js';
 
   if (token == null) {
     if (code != null) {
-      const authUrl = `http://localhost:3123/authenticate/${code}`;
+      const authUrl = `/authenticate/${code}`;
       ({ token } = await window.fetch(authUrl).then(res => res.json()));
 
       if (token != null) {
@@ -19,7 +19,7 @@ import { shuffle } from './helpers/shuffle.js';
         window.location.href = '/';
       }
     } else {
-      document.body.innerHTML = '<a href="/login">Login with GitHub</a>';
+      window.location.href = '/auth';
     }
     return undefined;
   }
@@ -31,7 +31,7 @@ import { shuffle } from './helpers/shuffle.js';
   boardEl.rows = 4;
   boardEl.columns = 8;
 
-  document.body.appendChild(boardEl);
+  document.getElementById('play').appendChild(boardEl);
   applyGameRules(boardEl);
 
   const cards = await fetchCards(16);
