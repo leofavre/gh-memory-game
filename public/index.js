@@ -6,20 +6,34 @@ import { applyGameRules } from './game/applyGameRules.js';
 import { shuffle } from './helpers/shuffle.js';
 
 (async () => {
+  if (window.location.pathname.startsWith('/login')) {
+    return undefined;
+  }
+
   let token = window.localStorage.getItem(STORE_INDEX);
   const [, code] = window.location.href.match(/\?code=(.*)/) || [];
+
+  if (window.location.pathname.startsWith('/oauth')) {
+    const newUrl = `${window.location.protocol}//${window.location.host}`;
+    window.history.replaceState({}, '', newUrl);
+  }
 
   if (token == null) {
     if (code != null) {
       const authUrl = `/authenticate/${code}`;
-      ({ token } = await window.fetch(authUrl).then(res => res.json()));
+
+      try {
+        ({ token } = await window.fetch(authUrl).then(res => res.json()));
+      } catch (err) {}
 
       if (token != null) {
         window.localStorage.setItem(STORE_INDEX, token);
         window.location.href = '/';
+      } else {
+        window.location.href = '/login';
       }
     } else {
-      window.location.href = '/auth';
+      window.location.href = '/login';
     }
     return undefined;
   }
@@ -34,7 +48,17 @@ import { shuffle } from './helpers/shuffle.js';
   document.getElementById('play').appendChild(boardEl);
   applyGameRules(boardEl);
 
-  const cards = await fetchCards(16);
+  let cards;
+
+  try {
+    cards = await fetchCards(16);
+  } catch (err) {}
+
+  if (!cards) {
+    window.localStorage.removeItem(STORE_INDEX);
+    window.location.href = '/login';
+    return undefined;
+  }
 
   shuffle([...cards, ...cards])
     .forEach(({ login, avatar }) => {
