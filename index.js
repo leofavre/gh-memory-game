@@ -8,9 +8,9 @@ const qs = require('querystring');
 dotenv.config();
 
 const {
-  SERVER_HOST = 'localhost',
-  SERVER_PORT = 3123,
-  OAUTH_HOST = 'github.com',
+  HOST = 'localhost',
+  PORT = 3123,
+  OAUTH_HOST,
   OAUTH_CLIENT_ID,
   OAUTH_CLIENT_SECRET
 } = process.env;
@@ -50,6 +50,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public/index.html'));
 });
 
-app.listen(SERVER_PORT, SERVER_HOST, () => {
-  console.log(`Listening on http://${SERVER_HOST}:${SERVER_PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Listening on http://${HOST}:${PORT}`);
 });
