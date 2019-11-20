@@ -17,11 +17,11 @@ const {
 
 const BASE_URL = `https://${OAUTH_HOST}`;
 
-app.get('/authenticate/:code', (req, res, next) => {
+app.get('/request-token', (req, res, next) => {
   const params = {
     client_id: OAUTH_CLIENT_ID,
     client_secret: OAUTH_CLIENT_SECRET,
-    code: req.params.code
+    code: req.query.code
   };
 
   axios({

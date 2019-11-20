@@ -20,7 +20,7 @@ import { shuffle } from './helpers/shuffle.js';
 
   if (token == null) {
     if (code != null) {
-      const authUrl = `/authenticate/${code}`;
+      const authUrl = `/request-token?code=${code}`;
 
       try {
         ({ token } = await window.fetch(authUrl).then(res => res.json()));
