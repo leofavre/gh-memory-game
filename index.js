@@ -35,7 +35,7 @@ app.get('/authenticate/:code', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/auth', (req, res) => {
+app.get('/auth', (req, res, next) => {
   const params = qs.stringify({
     client_id: OAUTH_CLIENT_ID,
     scope: 'user:email'
