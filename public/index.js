@@ -6,24 +6,15 @@ import { applyGameRules } from './game/applyGameRules.js';
 import { shuffle } from './helpers/shuffle.js';
 
 (async () => {
-  if (window.location.pathname.startsWith('/login')) {
-    return undefined;
-  }
-
-  let token = window.localStorage.getItem(STORE_INDEX);
-  const [, code] = window.location.href.match(/\?code=(.*)/) || [];
-
   if (window.location.pathname.startsWith('/oauth')) {
-    const newUrl = `${window.location.protocol}//${window.location.host}`;
-    window.history.replaceState({}, '', newUrl);
-  }
+    let token;
+    const [, code] = window.location.href.match(/\?code=(.*)/) || [];
 
-  if (token == null) {
     if (code != null) {
-      const authUrl = `/request-token?code=${code}`;
-
       try {
-        ({ token } = await window.fetch(authUrl).then(res => res.json()));
+        ({ token } = await window
+          .fetch(`/request-token?code=${code}`)
+          .then(res => res.json()));
       } catch (err) {}
 
       if (token != null) {
@@ -35,40 +26,41 @@ import { shuffle } from './helpers/shuffle.js';
     } else {
       window.location.href = '/login';
     }
-    return undefined;
   }
 
-  window.customElements.define('github-card', GitHubCard);
-  window.customElements.define('memory-game', MemoryGame);
+  if (window.location.pathname.startsWith('/play')) {
+    window.customElements.define('github-card', GitHubCard);
+    window.customElements.define('memory-game', MemoryGame);
 
-  const boardEl = document.createElement('memory-game');
-  boardEl.rows = 4;
-  boardEl.columns = 8;
+    const boardEl = document.createElement('memory-game');
+    boardEl.rows = 4;
+    boardEl.columns = 8;
 
-  document.getElementById('play').appendChild(boardEl);
-  applyGameRules(boardEl);
+    document.getElementById('play').appendChild(boardEl);
+    applyGameRules(boardEl);
 
-  let cards;
+    let cards;
 
-  try {
-    cards = await fetchCards(16);
-  } catch (err) {}
+    try {
+      cards = await fetchCards(16);
+    } catch (err) {}
 
-  if (!cards) {
-    window.localStorage.removeItem(STORE_INDEX);
-    window.location.href = '/login';
-    return undefined;
-  }
+    if (!cards) {
+      window.localStorage.removeItem(STORE_INDEX);
+      window.location.href = '/login';
+      return undefined;
+    }
 
-  shuffle([...cards, ...cards])
-    .forEach(({ login, avatar }) => {
-      const cardEl = document.createElement('github-card');
-      cardEl.login = login;
-      cardEl.innerHTML = `
+    shuffle([...cards, ...cards])
+      .forEach(({ login, avatar }) => {
+        const cardEl = document.createElement('github-card');
+        cardEl.login = login;
+        cardEl.innerHTML = `
         <span>
           <img src="${avatar}"></img>
         </span>
       `;
-      boardEl.appendChild(cardEl);
-    });
+        boardEl.appendChild(cardEl);
+      });
+  }
 })();
