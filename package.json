@@ -23,10 +23,11 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^1.19.4",
     "random-string": "^0.2.0"
   },
   "scripts": {
-    "start": "node server/index.js"
+    "start": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
