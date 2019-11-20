@@ -5,8 +5,8 @@ import { fetchCards } from './game/fetchCards.js';
 import { applyGameRules } from './game/applyGameRules.js';
 import { shuffle } from './helpers/shuffle.js';
 
-(async () => {
-  if (window.location.pathname.startsWith('/oauth')) {
+const actOnRoute = async () => {
+  if (window.location.pathname === '/oauth') {
     let token;
     const [, code] = window.location.href.match(/\?code=(.*)/) || [];
 
@@ -28,7 +28,7 @@ import { shuffle } from './helpers/shuffle.js';
     }
   }
 
-  if (window.location.pathname.startsWith('/play')) {
+  if (window.location.pathname === '/play') {
     window.customElements.define('github-card', GitHubCard);
     window.customElements.define('memory-game', MemoryGame);
 
@@ -63,4 +63,6 @@ import { shuffle } from './helpers/shuffle.js';
         boardEl.appendChild(cardEl);
       });
   }
-})();
+};
+
+actOnRoute();
