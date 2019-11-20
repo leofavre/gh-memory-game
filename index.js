@@ -17,13 +17,6 @@ const {
 
 const BASE_URL = `https://${OAUTH_HOST}`;
 
-app.all('*', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', BASE_URL);
-  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
-
 app.get('/authenticate/:code', (req, res, next) => {
   const params = {
     client_id: OAUTH_CLIENT_ID,
@@ -42,23 +35,21 @@ app.get('/authenticate/:code', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/auth', (req, res, next) => {
+app.get('/auth', (req, res) => {
   const params = qs.stringify({
     client_id: OAUTH_CLIENT_ID,
     scope: 'user:email'
   });
 
-  res
-    .redirect(`${BASE_URL}/login/oauth/authorize?${params}`)
-    .catch(next);
+  res.redirect(`${BASE_URL}/login/oauth/authorize?${params}`);
 });
 
 app.use(express.static('public'));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../public/index.html'));
+  res.sendFile(path.resolve(__dirname, 'public/index.html'));
 });
 
 app.listen(SERVER_PORT, SERVER_HOST, () => {
-  console.log(`Listening on ${SERVER_HOST}:${SERVER_PORT}`);
+  console.log(`Listening on http://${SERVER_HOST}:${SERVER_PORT}`);
 });
